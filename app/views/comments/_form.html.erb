@@ -1,0 +1,10 @@
+<%= form_with(model: [@post, @post.comments.new], local: true) do |f| %>
+  
+  <div class="field w-25">
+    <%= f.label 'Treść',class: "form-label"%>
+    <%= f.text_area :body, class: "form-control"%>
+  </div>
+  <div class="actions">
+    <%= f.submit 'Dodaj komentarz', class: "btn btn-primary m-2" %>
+  </div>
+<% end %>

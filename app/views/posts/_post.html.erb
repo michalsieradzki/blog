@@ -1,9 +1,15 @@
 <div id="<%= dom_id post %>">
-  <p>
-    <strong>Title:</strong>
+  <h2>
+    <strong>Tytuł:</strong>
     <%= post.title %>
-  </p>
+  </h2>
 
+<% if post.category %>
+  <p>
+    <strong>Kategoria:</strong>
+    <%= link_to post.category.name, posts_url(category_id: post.category.id) %>
+  </p>
+<% end %>
   <p>
     <strong>Body:</strong>
     <%= post.body %>

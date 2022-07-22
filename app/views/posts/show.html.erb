@@ -3,8 +3,24 @@
 <%= render @post %>
 
 <div>
-  <%= link_to "Edit this post", edit_post_path(@post) %> |
-  <%= link_to "Back to posts", posts_path %>
+  <%= link_to "Edytuj", edit_post_path(@post), class: "btn btn-secondary m-2" %>
+  <%= button_to "Usuń", @post, method: :delete, class: "btn btn-danger m-2" %>
 
-  <%= button_to "Destroy this post", @post, method: :delete %>
 </div>
+ <% @comments.each do |com| %>
+  <div class="card w-50">
+    <div class="card-body">
+      <p class="card-text"><%= com.body %></p>
+      <h6 class="card-title"><%= com.user.try(:email) %></h6>
+      <% if com.user_id == current_user.id %>
+        <%= button_to "Usuń", post_comment_path(@post, com), method: :delete, form: { data: {turbo_confirm: "Czy napewno usunąć komentarz?"}}, class: "btn btn-danger xs p-1" %> 
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<% if user_signed_in? %>
+  <%= render 'comments/form', comment: @comment %>
+<% else %>
+  <%= link_to 'Zaloguj się aby móc dodać komentarz', user_session_path %>
+<% end %>
+ <p class="mt-5"> <%= link_to "Powrót", posts_path, class: "btn btn-secondary m-2" %></p>

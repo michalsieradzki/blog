@@ -1,27 +1,38 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show edit update destroy ]
-
+  before_action :set_category
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   # GET /posts or /posts.json
   def index
-    @posts = Post.all
+    
+    if params[:category_id]
+
+      @posts = Post.where(category_id: params[:category_id])
+    else
+      @posts = Post.all
+    end
   end
 
   # GET /posts/1 or /posts/1.json
   def show
+    @comments = @post.comments
+    
   end
 
   # GET /posts/new
   def new
     @post = Post.new
+    
   end
 
   # GET /posts/1/edit
   def edit
+    
   end
 
   # POST /posts or /posts.json
   def create
-    @post = Post.new(post_params)
+    @post = Post.new(post_params.merge(user_id: current_user.id))
 
     respond_to do |format|
       if @post.save
@@ -65,6 +76,9 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :body)
+      params.require(:post).permit(:title, :body, :category_id)
+    end
+    def set_category
+      @categories = Category.all
     end
 end
