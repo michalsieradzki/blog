@@ -1,18 +1,24 @@
 <div id="<%= dom_id post %>">
-  <h2>
-    <strong>Tytuł:</strong>
-    <%= post.title %>
-  </h2>
+  <div class="card m-2">
+    <h4 class="card-title m-3">
+      <%= post.title %>
+    </h4>
 
-<% if post.category %>
-  <p>
-    <strong>Kategoria:</strong>
-    <%= link_to post.category.name, posts_url(category_id: post.category.id) %>
-  </p>
-<% end %>
-  <p>
-    <strong>Body:</strong>
-    <%= post.body %>
-  </p>
-
+  <% if post.category_ids %>
+  <div class="card-text  m-3">
+    Kategorie:
+      <% post.category_ids.each do |category| %>
+        <% post.category_id = category %>
+        <% cat = Category.find(category)%>
+        <%= cat.name %>
+      <% end%>
+    
+  <% end %>
+  </div> 
+      <p class="card-text m-3">
+        <%= post.body %>
+      </p>
+      
+      <%= link_to "Pokaż ten post", post, class: "btn btn-info w-25 m-3" %>
+  </div>
 </div>

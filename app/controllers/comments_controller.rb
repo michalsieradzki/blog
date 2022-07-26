@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!, only: [:create]
   
-  before_action :set_post
+  before_action :set_post, only: [:create, :destroy]
   before_action :set_comment, except: :create
 
   def create
@@ -16,7 +16,9 @@ class CommentsController < ApplicationController
    end
     redirect_to @post
   end
-
+  def index
+    @comments = Comment.where(user_id: params[:user_id])
+  end
   
   private
 
@@ -24,7 +26,11 @@ class CommentsController < ApplicationController
     params.require(:comment).permit(:body)
   end
   def set_comment
+    if params[:id]
     @comment = Comment.find(params[:id])
+    else
+    @comment = Comment.all
+    end
   end
 
   def set_post

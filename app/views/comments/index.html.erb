@@ -1,0 +1,7 @@
+<h1>Komentarze użytkownika <%= User.find(params[:user_id]).email %></h1>
+
+
+  <% @comments.each do |comment| %><br>
+    <%= comment.body %>
+  <% end %>
+ 

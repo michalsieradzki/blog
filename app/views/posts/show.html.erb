@@ -4,16 +4,20 @@
 
 <div>
   <%= link_to "Edytuj", edit_post_path(@post), class: "btn btn-secondary m-2" %>
-  <%= button_to "Usuń", @post, method: :delete, class: "btn btn-danger m-2" %>
+  <%= button_to "Usuń", @post, method: :delete, form: { data: {turbo_confirm: "Czy napewno usunąć post?"}}, class: "btn btn-danger m-2" %>
 
 </div>
  <% @comments.each do |com| %>
   <div class="card w-50">
     <div class="card-body">
       <p class="card-text"><%= com.body %></p>
-      <h6 class="card-title"><%= com.user.try(:email) %></h6>
-      <% if com.user_id == current_user.id %>
-        <%= button_to "Usuń", post_comment_path(@post, com), method: :delete, form: { data: {turbo_confirm: "Czy napewno usunąć komentarz?"}}, class: "btn btn-danger xs p-1" %> 
+      <h6 class="card-title">
+        <%= link_to com.user.try(:email), comments_url(user_id: com.user.try(:id)) %>
+      </h6>
+      <% if user_signed_in? %>
+        <% if com.user_id == current_user.id %>
+          <%= button_to "Usuń", post_comment_path(@post, com), method: :delete, form: { data: {turbo_confirm: "Czy napewno usunąć komentarz?"}}, class: "btn btn-danger xs p-1" %> 
+        <% end %>
       <% end %>
     </div>
   </div>

@@ -10,22 +10,29 @@
       </ul>
     </div>
   <% end %>
-
+  <h1><%= @current_user.email %></h1>
   <div>
-    <%= form.label 'Kategoria', style: "display: block" %>
-    <%= form.select(:category_id, @categories.collect {|c| [c.name, c.id]}, { :include_blank => '--wybierz--'}) %>
+    <%= form.label 'Użytkownik', style: "display: block" %>
+    <%= form.text_field 'user', value: @current_user.email, readonly: true %>
   </div>
   <div>
-    <%= form.label :title, style: "display: block" %>
+    <%= form.label 'Kategoria', style: "display: block" %>
+    <%= form.collection_check_boxes :category_ids, @categories, :id, :name %>
+    
+    
+  </div>
+  <div>
+    <%= form.label 'Tytuł', style: "display: block" %>
     <%= form.text_field :title %>
   </div>
 
   <div class="field">
-    <%= form.label :body, style: "display: block" %>
+    <%= form.label 'Treść', style: "display: block" %>
     <%= form.text_area :body %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Zapisz post', class: "btn btn-primary" %>
   </div>
 <% end %>
+

@@ -1,6 +1,7 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: %i[ show edit update destroy ]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :check_user_role!
   # GET /categories or /categories.json
   def index
     @categories = Category.all
